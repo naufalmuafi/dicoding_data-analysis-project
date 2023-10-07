@@ -10,6 +10,8 @@ scipy = "*"
 matplotlib = "*"
 seaborn = "*"
 jupyter = "*"
+streamlit = "*"
+babel = "*"
 
 [dev-packages]
 
