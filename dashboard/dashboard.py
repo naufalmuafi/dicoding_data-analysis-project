@@ -176,4 +176,68 @@ ax[1].tick_params(axis='x', labelsize=30)
 
 st.pyplot(fig)
 
-# Customers Demography
+# Customers Demographics
+st.subheader("Customer Demographics")
+
+col1, col2 = st.columns(2)
+
+# by gender
+with col1:
+  fig, ax = plt.subplots(figsize=(20, 10))
+  
+  sns.barplot(
+    y="customer_count",
+    x="gender",
+    data=bygender_df.sort_values(by="customer_count", ascending=False),
+    palette=colors,
+    ax=ax
+  )
+  ax.set_title("Number of Customer by Gender", loc="center", fontsize=50)
+  ax.set_ylabel(None)
+  ax.set_xlabel(None)
+  ax.tick_params(axis='y', labelsize=35)
+  ax.tick_params(axis='x', labelsize=30)
+  st.pyplot(fig)
+
+# by ages
+with col2:
+  fig, ax = plt.subplots(figsize=(20, 10))
+  
+  colors = ["#D3D3D3", "#90CAF9", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+  
+  sns.barplot(
+    y="customer_count",
+    x="age_group",
+    data=byage_df.sort_values(by="age_group", ascending=False),
+    palette=colors,
+    ax=ax
+  )
+  ax.set_title("Number of Customer by Ages", loc="center", fontsize=50)
+  ax.set_ylabel(None)
+  ax.set_xlabel(None)
+  ax.tick_params(axis='y', labelsize=35)
+  ax.tick_params(axis='x', labelsize=30)
+  st.pyplot(fig)
+
+# by states
+fig, ax = plt.subplots(figsize=(20, 10))
+  
+colors = ["#90CAF9", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+sns.barplot(
+  y="customer_count",
+  x="state",
+  data=bystate_df.sort_values(by="customer_count", ascending=False),
+  palette=colors,
+  ax=ax
+)
+ax.set_title("Number of Customer by States", loc="center", fontsize=50)
+ax.set_ylabel(None)
+ax.set_xlabel(None)
+ax.tick_params(axis='y', labelsize=20)
+ax.tick_params(axis='x', labelsize=15)
+st.pyplot(fig)
+
+# RFM Parameter
+st.subheader("Best Customer Based on RFM Parameters")
+
+col1, col2, col3 = st.columns(3)
