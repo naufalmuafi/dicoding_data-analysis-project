@@ -6,11 +6,7 @@ from babel.numbers import format_currency
 
 sns.set(style="dark")
 
-"""
-================================
-     Dataframe Preparation
-================================
-"""
+# ====== Dataframe Preparation =====
 
 # Daily Orders Dataframe
 def create_daily_orders_df(df):
@@ -33,7 +29,7 @@ def create_sum_order_items_df(df):
 
 # By Gender Dataframe
 def create_bygender_df(df):
-  bygender_df = df.groupby(by="gender").customer_id.nunique().reser_index()
+  bygender_df = df.groupby(by="gender").customer_id.nunique().reset_index()
   bygender_df.rename(columns={
     "customer_id": "customer_count"
   }, inplace=True)
@@ -78,11 +74,7 @@ def create_rfm_df(df):
 # Load Clean Dataframe
 all_df = pd.read_csv("all_data.csv")
 
-"""
-================================
-    Create Filter Component
-================================
-"""
+# ====== Create Filter Component =====
 
 datetime_columns = ["order_date", "delivery_date"]
 all_df.sort_values(by="order_date", inplace=True)
@@ -115,3 +107,33 @@ bygender_df = create_bygender_df(main_df)
 byage_df = create_byage_df(main_df)
 bystate_df = create_bystate_df(main_df)
 rfm_df = create_rfm_df(main_df)
+
+# ====== Data Visualization =====
+
+st.header('Dicoding Collection Dashboard :sparkles:')
+
+# daily orders
+st.subheader('Daily Orders')
+
+col1, col2 = st.columns(2)
+
+with col1:
+  total_orders = daily_orders_df.order_count.sum()
+  st.metric("Total Orders", value=total_orders)
+
+with col2:
+  total_revenue = format_currency(daily_orders_df.revenue.sum(), "AUD", locale='es_CO')
+  st.metric("Total Revenue", value=total_revenue)
+
+fig, ax = plt.subplots(figsize=(16, 8))
+ax.plot(
+  daily_orders_df["order_date"],
+  daily_orders_df["order_count"],
+  marker='o',
+  linewidth=2,
+  color='#90CAF9'
+)
+ax.tick_params(axis='y', labelsize=20)
+ax.tick_params(axis='x', labelsize=15)
+
+st.pyplot(fig)
