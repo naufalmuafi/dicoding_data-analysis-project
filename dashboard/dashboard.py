@@ -6,6 +6,13 @@ from babel.numbers import format_currency
 
 sns.set(style="dark")
 
+"""
+================================
+     Dataframe Preparation
+================================
+"""
+
+# Daily Orders Dataframe
 def create_daily_orders_df(df):
   daily_orders_df = df.resample(rule='D', on='order_date').agg({
     "order_id": "nunique",
@@ -19,10 +26,12 @@ def create_daily_orders_df(df):
   
   return daily_orders_df
 
+# Sum Order Item Dataframe
 def create_sum_order_items_df(df):
   sum_order_items_df = df.groupby("product_name").quantity_x.sum().sort_values(ascending=False).reset_index()
   return sum_order_items_df
 
+# By Gender Dataframe
 def create_bygender_df(df):
   bygender_df = df.groupby(by="gender").customer_id.nunique().reser_index()
   bygender_df.rename(columns={
@@ -31,6 +40,7 @@ def create_bygender_df(df):
   
   return bygender_df
 
+# By Age Dataframe
 def create_byage_df(df):
   byage_df = df.groupby(by="age_group").customer_id.nunique().reset_index()
   byage_df.rename(columns={
@@ -40,6 +50,7 @@ def create_byage_df(df):
   
   return byage_df
 
+# By State Dataframe
 def create_bystate_df(df):
   bystate_df = df.groupby(by="state").customer_id.nunique().reset_index()
   bystate_df.rename(columns={
@@ -48,6 +59,7 @@ def create_bystate_df(df):
   
   return bystate_df
 
+# RFM Dataframe
 def create_rfm_df(df):
   rfm_df = df.groupby(by="customer_id", as_index=False).agg({
     "order_date": "max",
@@ -63,7 +75,14 @@ def create_rfm_df(df):
   
   return rfm_df
 
+# Load Clean Dataframe
 all_df = pd.read_csv("all_data.csv")
+
+"""
+================================
+    Create Filter Component
+================================
+"""
 
 datetime_columns = ["order_date", "delivery_date"]
 all_df.sort_values(by="order_date", inplace=True)
@@ -85,3 +104,14 @@ with st.sidebar:
     max_value=max_date,
     value=[min_date, max_date]
   )
+
+main_df = all_df[(all_df["order_date"] >= str(start_date)) &
+                 (all_df["order_date"] <= str(end_date))]
+
+# load the dataframe with helper function
+daily_orders_df = create_daily_orders_df(main_df)
+sum_order_items_df = create_sum_order_items_df(main_df)
+bygender_df = create_bygender_df(main_df)
+byage_df = create_byage_df(main_df)
+bystate_df = create_bystate_df(main_df)
+rfm_df = create_rfm_df(main_df)
