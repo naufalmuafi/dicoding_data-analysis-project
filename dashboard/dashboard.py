@@ -71,7 +71,7 @@ def create_rfm_df(df):
   
   return rfm_df
 
-# Load Clean Dataframe
+# Load Cleaned Dataframe
 all_df = pd.read_csv("all_data.csv")
 
 # ====== Create Filter Component =====
@@ -138,7 +138,7 @@ ax.tick_params(axis='x', labelsize=15)
 
 st.pyplot(fig)
 
-# Selling Performance
+# Product Performance
 st.subheader("Best & Worst Performing Product")
 
 fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(35,15))
@@ -237,19 +237,22 @@ ax.tick_params(axis='y', labelsize=20)
 ax.tick_params(axis='x', labelsize=15)
 st.pyplot(fig)
 
-# RFM Parameter
+# Best Customer Based on RFM Parameter
 st.subheader("Best Customer Based on RFM Parameters")
 
 col1, col2, col3 = st.columns(3)
 
+# Recency Metric
 with col1:
   avg_recency = round(rfm_df.recency.mean(), 1)
   st.metric("Average Recency (days)", value=avg_recency)
 
+# Frequency Metric
 with col2:
   avg_frequency = round(rfm_df.frequency.mean(), 2)
   st.metric("Average Frequency", value=avg_frequency)
 
+# Monetary Metric
 with col3:
   avg_frequency = format_currency(rfm_df.monetary.mean(), "AUD", locale="es_CO")
   st.metric("Average Monetary", value=avg_frequency)
@@ -258,6 +261,7 @@ fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(35, 15))
 
 colors = ["#90CAF9", "#90CAF9", "#90CAF9", "#90CAF9", "#90CAF9"]
 
+# Recency Plot
 sns.barplot(
   y="recency",
   x="customer_id",
@@ -271,6 +275,7 @@ ax[0].set_title("By Recency (days)", loc="center", fontsize=50)
 ax[0].tick_params(axis='y', labelsize=30)
 ax[0].tick_params(axis='x', labelsize=35)
 
+# Frequency Plot
 sns.barplot(
   y="frequency",
   x="customer_id",
@@ -284,6 +289,7 @@ ax[1].set_title("By Frequency", loc="center", fontsize=50)
 ax[1].tick_params(axis='y', labelsize=30)
 ax[1].tick_params(axis='x', labelsize=35)
 
+# Monetary Plot
 sns.barplot(
   y="monetary",
   x="customer_id",
