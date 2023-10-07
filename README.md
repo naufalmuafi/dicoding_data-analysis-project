@@ -23,3 +23,4 @@ Dataset: [Dicoding Collection](https://github.com/dicodingacademy/dicoding_datas
 ```bash
 pip install pipenv
 pipenv install
+```
